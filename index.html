@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>JWS PSD2 Enrollment</title>
+
+  <!-- Stylesheets -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./styles.css">
+
+  <!-- Scripts -->
+  <script>
+    delete module.exports
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="./window.js" charset="utf-8"></script>
+
+</head>
+
+<body>
+  <div id="container" class="container-fluid">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+        <h3 class="hash-heading">Algorithm</h3>
+        <select id="algorithm-input" class="form-select">
+          <option selected value="RSA-SHA256">RS256</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+        <h3 class="hash-heading">Payload</h3>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-email-input">Email</span>
+          <input rows="1"  type="text" id="email-input" placeholder="Enter owner email ..." class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-email-input"></input>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-epoc-time-input">Expiration time</span>
+          <input rows="1"  type="text" id="epoc-time-input" placeholder="Enter expiration time in Epoc formate ..." class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-epoc-time-input"></input>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <h3 class="hash-heading">Certificate</h3>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-public-certificate-input">Public Certificate</span>
+        <textarea rows="2"  type="text" id="public-certificate-input"  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-public-certificate-input"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-private-key-input">Private key</span>
+          <textarea rows="2"  type="text" id="private-key-input"  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-private-key-input"></textarea>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-passphrase">Passphrase</span>
+          <input rows="1"  type="text" id="passphrase-input"  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-passphrase-input"></input>
+        </div>
+      </div>
+    </div>
+
+
+   <!-- RSA row -->
+    <div class="row">
+      <h2>Step 1. Creating the Protected Header</h2>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">Protected Original string=</h3>
+        <pre id="protected-output" class="hash-output"> </pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">Protected base64 public certificate=</h3>
+        <pre id="protected-cert-encoded" class="hash-output"> </pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">Protected =</h3>
+        <pre id="protected-base64url-encoded" class="hash-output"> </pre>
+      </div>
+    </div>
+    <div class="row">
+      <h2>Step 2. Creating the Payload</h2>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">Payload original =</h3>
+        <pre id="payload-output" class="hash-output"> </pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">Payload =</h3>
+        <pre id="payload-base64url-encoded" class="hash-output"> </pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <h2>Step 3. Creating the signature</h2>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">SIGNING_STRING = BASE64URL(PROTECTED) + "." + BASE64URL(PAYLOAD)</h3>
+        <pre id="signing-string" class="hash-output"> </pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <h2>Step 3.2: Signing algorithm</h2>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">SIGNING_STRING = BASE64URL(PROTECTED) + "." + BASE64URL(PAYLOAD)</h3>
+        <pre id="signing" class="hash-output"> </pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">base64url(SIGNING_STRING)</h3>
+        <pre id="signing-base64url-encoded" class="hash-output"> </pre>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <h2>Step 4. Creating the API request body</h2>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">{
+          "protected": BASE64URL(PROTECTED),
+          "payload":   BASE64URL(PAYLOAD),
+          "signature": BASE64URL(SIGNATURE)
+          }</h3>
+        <p>
+          <button id="copy-request" type="button" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+              <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"></path>
+              <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"></path>
+            </svg>
+            Copy Request
+          </button>
+        </p>
+        <pre id="request-output" class="hash-output"> </pre>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
