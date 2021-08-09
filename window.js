@@ -1,6 +1,5 @@
-
-
 $(() => {
+
   const crypto = require('crypto')
   const clipboard = require('electron').clipboard
 

@@ -20,7 +20,8 @@ app.once('ready', () => {
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
-      contextIsolation: false
+      contextIsolation: false,
+      enableRemoteModule: true
     }
   })
 
